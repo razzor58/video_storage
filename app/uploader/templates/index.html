@@ -55,7 +55,7 @@
                                 <tr>
                                     <td>
                                         {% if row.video.process_status == 6 %}
-                                            <div align="left" class="embed-responsive embed-responsive-16by9" style="max-width: 500px">
+                                            <div align="left" class="embed-responsive embed-responsive-16by9" style="width: 500px">
                                                 <video controls class="embed-responsive-item">
                                                     <source src="{{ row.video_file_mp4.file.url }}" type="video/mp4">
                                                     <source src="{{ row.video_file_webm.file.url }}" type="video/webm">

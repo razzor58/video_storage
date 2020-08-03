@@ -23,6 +23,8 @@ services:
     depends_on:
       - web
       - redis
+    volumes:
+      - media_volume:/usr/src/app/mediafiles
 
   db:
     image: postgres:12.0-alpine

@@ -15,6 +15,11 @@ fs = FileSystemStorage()
 logger = getLogger(__name__)
 
 
+def get_name_from_url(url):
+    url_no_params = url.split('?')[0] if '?' in url else url
+    return Path(url_no_params).name
+
+
 class FileHandler:
     def __init__(self, record_id, file_path, file_name):
         self.record_id = record_id
@@ -47,14 +52,11 @@ class SourceLinkSaver(FileHandler):
         self.result_file_name = self.file_name
 
     def process(self):
-        remote_content = get(self.file_path).content
-        file_path = Path(settings.MEDIA_ROOT, 'google_err.html')
+        response = get(self.file_path)
+        file_path = Path(settings.MEDIA_ROOT, self.file_name)
         with open(file_path, 'wb') as f:
-            f.write(remote_content)
-
-        with open(file_path, 'rb') as f:
-            filename = fs.save(self.file_name, File(f))
-            self.result_file_path = fs.path(filename)
+            f.write(response.content)
+            self.result_file_path = file_path
             self.update_status()
 
         return self.result_file_path

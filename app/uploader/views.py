@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import DetailView
 
 from .models import Record, RecordFiles
-from .tasks import handle_video
+from .tasks import handle_video, get_name_from_url, SourceFileSaver
 
 
 class IndexView(DetailView):
@@ -32,10 +32,16 @@ class IndexView(DetailView):
 
         if video_file:
             obj = Record.objects.create(name=video_file.name, process_status=Record.NEW_FILE, upload_by=req_user)
-            _ = handle_video.delay(obj.id, video_file.name, video_file.temporary_file_path())
+
+            # save file on disk before process in different container
+            saver = SourceFileSaver(obj.id, video_file.temporary_file_path(), video_file.name)
+            saved_file_path = saver.process()
+
+            _ = handle_video.delay(obj.id, video_file.name, saved_file_path)
 
         elif video_link:
-            obj = Record.objects.create(process_status=Record.NEW_LINK, upload_by=req_user)
-            _ = handle_video.delay(obj.id, video_link, video_link)
+            video_name = get_name_from_url(video_link)
+            obj = Record.objects.create(name=video_name, process_status=Record.NEW_LINK, upload_by=req_user)
+            _ = handle_video.delay(obj.id, video_name, video_link)
 
-        return render(request, self.template_name, self.get_context_data())
+        return redirect('index')
