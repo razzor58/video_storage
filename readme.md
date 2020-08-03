@@ -1,5 +1,8 @@
 #### Приложение видео-архив
 
+
+![Alt Text](https://media.giphy.com/media/dv72pldfg7ToBXkpMZ/giphy.gif)
+
 Для запуска локально
 ```
 kubectl apply -f ./k8s
