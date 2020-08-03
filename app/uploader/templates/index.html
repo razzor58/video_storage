@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row m-b-lg">
+
+        </div>
+        <div class="row m-b-lg justify-content-center">
+            <div class="col-lg-10">
+                <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+                    <div class="input-group" id="file_input_group">
+                         {% csrf_token %}
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" name="video">
+                            <label class="custom-file-label" for="customFile">Выбрать файл</label>
+                        </div>
+                        <span class="input-group-append">
+                            <button type="submit" class="btn btn-primary1">Загрузить</button>
+                        </span>
+                    </div>
+                    <div class="input-group" id="link_input_group" style="display: none;">
+                        <div class="custom-file">
+                            <input type="text" class="form-control" name="link">
+                        </div>
+                        <span class="input-group-append">
+                            <button type="submit" class="btn btn-primary1">Загрузить</button>
+                        </span>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                               value="video_file_input" checked>
+                        <label class="form-check-label" for="inlineRadio1">Файл</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                               value="option2">
+                        <label class="form-check-label" for="inlineRadio2">Ссылка</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+                <div class="row m-b-lg justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Мои файлы</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table borderless">
+                            <tbody>
+                               {% for row in video_list  %}
+                                <tr>
+                                    <td>
+                                        {% if row.video.process_status == 6 %}
+                                            <div align="left" class="embed-responsive embed-responsive-16by9" style="max-width: 500px">
+                                                <video controls class="embed-responsive-item">
+                                                    <source src="{{ row.video_file_mp4.file.url }}" type="video/mp4">
+                                                    <source src="{{ row.video_file_webm.file.url }}" type="video/webm">
+                                                </video>
+                                            </div>
+                                        {% elif row.preview %}
+                                           <img src="{{ row.preview.file.url }}" class="img-fluid" style="max-width: 500px">
+                                        {% else %}
+                                            <img src="{% static 'default_video.png' %}" class="img-fluid" style="width: 500px">
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ rows.video.name }}">{{ row.video.name }}</a><br>
+                                        {{ row.video.get_process_status_display }}<br>
+                                        {{ row.video.upload_time|date:'Y-m-d H:i' }}<br>
+                                    </td>
+                                </tr>
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                    </div>
+                </div>
+                    </div>
+                </div>
+
+    </div>
+
+{% endblock %}

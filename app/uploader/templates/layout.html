@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Stepik Video Storage</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+
+    {% block style %}
+    {% endblock %}
+</head>
+
+<body id="page-top" class="landing-page no-skin-config pace-done">
+<div id="inSlider" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Stepik VS
+                    </h1>
+                    <p>Ваш видео архив</p>
+                </div>
+            </div>
+            <!-- Set background for slide in css -->
+            <div class="header-back one"></div>
+        </div>
+
+    </div>
+</div>
+{% block content %}
+
+
+{% endblock %}
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<script>
+    $(document).ready(function () {
+  bsCustomFileInput.init()
+})
+
+$(document).on('change', 'input:radio', function (event) {
+    var radio_id = $(this).attr('id');
+    if (radio_id == 'inlineRadio2') {
+        $('#link_input_group').show()
+        $('#file_input_group').hide()
+    }
+    else {
+        $('#link_input_group').hide()
+        $('#file_input_group').show()
+    }
+
+});
+</script>
+
+</html>
