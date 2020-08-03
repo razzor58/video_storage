@@ -78,8 +78,8 @@ spec:
             configMapKeyRef:
               key: SECRET_KEY
               name: env
-        image: video_storage_web
-        imagePullPolicy: "Never"
+        image: razzor58/video_storage_web
+        imagePullPolicy: ""
         name: web
         ports:
         - containerPort: 8000
