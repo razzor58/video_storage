@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 
 services:
   web:
@@ -32,19 +32,26 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
+    ports:
+      - 5432:5432
 
   redis:
     image: redis:5-alpine
+    ports:
+      - 6379:6379
 
   nginx:
     build: ./nginx
     volumes:
       - static_volume:/usr/src/app/staticfiles
       - media_volume:/usr/src/app/mediafiles
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     ports:
       - 1337:80
     depends_on:
       - web
+    labels:
+      kompose.service.type: LoadBalancer
 
 volumes:
   postgres_data:
